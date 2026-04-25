@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golden Dragon — API Gateway</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A0F;
+  --bg2: #111118;
+  --bg3: #1A1A24;
+  --border: #2A2A38;
+  --gold: #F5C518;
+  --gold2: #D4A017;
+  --blue: #2997FF;
+  --green: #30D158;
+  --red: #FF453A;
+  --orange: #FF9F0A;
+  --purple: #BF5AF2;
+  --text: #F0F0F8;
+  --muted: #8888A0;
+  --font: 'Manrope', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,10,15,.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.nav-brand .icon { font-size: 22px; }
+.nav-brand .name { font-size: 15px; font-weight: 800; color: var(--gold); }
+.nav-brand .sub { font-size: 11px; color: var(--muted); margin-left: 2px; }
+.nav-links { display: flex; align-items: center; gap: 8px; }
+.nav-links a {
+  color: var(--muted); font-size: 13px; font-weight: 500;
+  text-decoration: none; padding: 6px 12px; border-radius: 8px;
+  transition: all .15s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,.06); }
+.nav-badge {
+  background: rgba(48,209,88,.15); color: var(--green);
+  font-size: 11px; font-weight: 700; padding: 4px 10px;
+  border-radius: 20px; border: 1px solid rgba(48,209,88,.3);
+  display: flex; align-items: center; gap: 5px;
+}
+.nav-badge::before { content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* HERO */
+.hero {
+  padding: 140px 24px 80px;
+  text-align: center;
+  background: radial-gradient(ellipse at 50% 0%, rgba(245,197,24,.1) 0%, transparent 65%);
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(245,197,24,.1); border: 1px solid rgba(245,197,24,.25);
+  color: var(--gold); font-size: 12px; font-weight: 600;
+  padding: 6px 14px; border-radius: 20px; margin-bottom: 24px;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 56px); font-weight: 800; line-height: 1.1;
+  background: linear-gradient(135deg, var(--gold) 0%, #fff 60%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 16px;
+}
+.hero p { font-size: 17px; color: var(--muted); max-width: 520px; margin: 0 auto 36px; line-height: 1.6; }
+.hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--gold); color: #000; font-family: var(--font);
+  font-size: 14px; font-weight: 700; padding: 12px 24px;
+  border: none; border-radius: 10px; cursor: pointer; text-decoration: none;
+  transition: background .2s;
+}
+.btn-primary:hover { background: var(--gold2); }
+.btn-secondary {
+  background: rgba(255,255,255,.06); color: var(--text); font-family: var(--font);
+  font-size: 14px; font-weight: 600; padding: 12px 24px;
+  border: 1px solid var(--border); border-radius: 10px; cursor: pointer;
+  text-decoration: none; transition: all .15s;
+}
+.btn-secondary:hover { background: rgba(255,255,255,.1); }
+
+/* STATS */
+.stats { display: flex; justify-content: center; gap: 40px; padding: 0 24px 80px; flex-wrap: wrap; }
+.stat { text-align: center; }
+.stat .val { font-size: 28px; font-weight: 800; color: var(--gold); }
+.stat .lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* SECTION */
+.section { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+.section-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px; }
+
+/* SERVICES */
+.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.service-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px 22px;
+  transition: border-color .2s;
+}
+.service-card:hover { border-color: rgba(245,197,24,.3); }
+.service-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.service-name { display: flex; align-items: center; gap: 10px; }
+.service-icon { font-size: 20px; }
+.service-title { font-size: 15px; font-weight: 700; }
+.service-port { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.badge {
+  font-size: 11px; font-weight: 700; padding: 3px 10px;
+  border-radius: 20px; border: 1px solid;
+}
+.badge-green { background: rgba(48,209,88,.12); color: var(--green); border-color: rgba(48,209,88,.25); }
+.badge-yellow { background: rgba(245,197,24,.12); color: var(--gold); border-color: rgba(245,197,24,.25); }
+.badge-red { background: rgba(255,69,58,.12); color: var(--red); border-color: rgba(255,69,58,.25); }
+.service-desc { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+.service-endpoints { display: flex; flex-direction: column; gap: 6px; }
+.ep {
+  display: flex; align-items: center; gap: 8px; padding: 7px 10px;
+  background: var(--bg3); border-radius: 7px; font-size: 12px;
+}
+.ep-method {
+  font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; min-width: 36px; text-align: center;
+}
+.get { background: rgba(48,209,88,.15); color: var(--green); }
+.post { background: rgba(41,151,255,.15); color: var(--blue); }
+.ep-path { font-family: monospace; color: var(--text); flex: 1; }
+.ep-desc { color: var(--muted); font-size: 11px; }
+
+/* SUBPROJECTS */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.project-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px;
+  text-decoration: none; color: inherit;
+  transition: all .2s; display: block;
+}
+.project-card:hover { border-color: rgba(41,151,255,.4); transform: translateY(-2px); }
+.project-emoji { font-size: 28px; margin-bottom: 10px; }
+.project-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.project-domain { font-size: 12px; color: var(--blue); font-family: monospace; margin-bottom: 8px; }
+.project-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.project-tag {
+  display: inline-block; margin-top: 10px;
+  font-size: 10px; font-weight: 700; padding: 3px 8px;
+  border-radius: 6px; background: rgba(255,255,255,.06); color: var(--muted);
+}
+
+/* SECURITY */
+.security-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.sec-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.sec-icon { font-size: 20px; flex-shrink: 0; }
+.sec-name { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.sec-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* STATUS LIVE */
+.status-bar {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px 22px;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+}
+.status-item { display: flex; align-items: center; gap: 8px; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-green { background: var(--green); box-shadow: 0 0 8px var(--green); }
+.dot-yellow { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+.dot-red { background: var(--red); }
+.dot-checking { background: var(--muted); animation: blink .8s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+.status-name { font-size: 13px; font-weight: 600; }
+.status-latency { font-size: 11px; color: var(--muted); }
+
+/* FOOTER */
+footer {
+  text-align: center; padding: 32px 24px;
+  border-top: 1px solid var(--border);
+  color: var(--muted); font-size: 13px;
+}
+footer a { color: var(--gold); text-decoration: none; }
+
+/* MOBILE */
+#mob-menu-btn {
+  display: none; background: none; border: none;
+  color: var(--gold); font-size: 20px; cursor: pointer;
+}
+@media (max-width: 768px) {
+  #mob-menu-btn { display: flex; align-items: center; }
+  .nav-links { display: none; }
+  .hero { padding: 100px 16px 60px; }
+  .hero h1 { font-size: 30px; }
+  .hero p { font-size: 15px; }
+  .stats { gap: 24px; padding: 0 16px 60px; }
+  .section { padding: 0 16px 60px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .projects-grid { grid-template-columns: 1fr 1fr; }
+  .security-grid { grid-template-columns: 1fr 1fr; }
+  nav { padding: 0 16px; }
+}
+@media (max-width: 480px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .security-grid { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .btn-primary, .btn-secondary { width: 100%; max-width: 280px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <span class="icon">🐉</span>
+    <div>
+      <div class="name">Golden Dragon API</div>
+    </div>
+  </div>
+  <button id="mob-menu-btn" onclick="scrollTo({top:0})">☰</button>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#projects">Projects</a>
+    <a href="#security">Security</a>
+    <div class="nav-badge" id="gw-status">Checking...</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">⚡ GPIWD — 6-Layer Immune System Gateway</div>
+  <h1>Golden Dragon<br>API Gateway</h1>
+  <p>Central API hub powering the entire Golden Dragon ecosystem. Secure, fast, and intelligent request routing.</p>
+  <div class="hero-actions">
+    <a href="#services" class="btn-primary">Explore Services</a>
+    <a href="https://muhamadridwanjr.xyz" target="_blank" class="btn-secondary">🐉 Hub</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="val">6</div><div class="lbl">Security Layers</div></div>
+  <div class="stat"><div class="val">5+</div><div class="lbl">Microservices</div></div>
+  <div class="stat"><div class="val">99%</div><div class="lbl">Uptime Target</div></div>
+  <div class="stat"><div class="val">&lt;100ms</div><div class="lbl">Avg Latency</div></div>
+</div>
+
+<!-- LIVE STATUS -->
+<div class="section" id="status">
+  <div class="section-title">Live Status</div>
+  <div class="status-bar" id="status-bar">
+    <div class="status-item">
+      <div class="status-dot dot-checking" id="dot-gw"></div>
+      <span class="status-name">Gateway</span>
+      <span class="status-latency" id="lat-gw">–</span>
+    </div>
+    <div class="status-item">
+      <div class="status-dot dot-checking" id="dot-teknik"></div>
+      <span class="status-name">Teknik API</span>
+      <span class="status-latency" id="lat-teknik">–</span>
+    </div>
+    <div class="status-item">
+      <div class="status-dot dot-checking" id="dot-gas"></div>
+      <span class="status-name">GAS Terminal</span>
+      <span class="status-latency" id="lat-gas">–</span>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div class="section" id="services">
+  <div class="section-title">Services</div>
+  <div class="services-grid">
+
+    <div class="service-card">
+      <div class="service-head">
+        <div class="service-name">
+          <span class="service-icon">🛡️</span>
+          <div>
+            <div class="service-title">GPIWD Gateway</div>
+            <div class="service-port">Port 7777 · Node.js Fastify</div>
+          </div>
+        </div>
+        <span class="badge badge-green">Live</span>
+      </div>
+      <div class="service-desc">Main API gateway with 6-layer immune system security. Handles auth, rate limiting, anomaly detection, and routing.</div>
+      <div class="service-endpoints">
+        <div class="ep"><span class="ep-method post">POST</span><span class="ep-path">/auth/login</span><span class="ep-desc">JWT login</span></div>
+        <div class="ep"><span class="ep-method post">POST</span><span class="ep-path">/auth/register</span><span class="ep-desc">Register</span></div>
+        <div class="ep"><span class="ep-method get">GET</span><span class="ep-path">/health</span><span class="ep-desc">Health check</span></div>
+        <div class="ep"><span class="ep-method post">POST</span><span class="ep-path">/admin/auth/login</span><span class="ep-desc">Admin login</span></div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-head">
+        <div class="service-name">
+          <span class="service-icon">🔧</span>
+          <div>
+            <div class="service-title">Teknik05mm API</div>
+            <div class="service-port">Port 8500 · Node.js Fastify</div>
+          </div>
+        </div>
+        <span class="badge badge-green">Live</span>
+      </div>
+      <div class="service-desc">E-commerce & booking backend for Teknik05mm Smart Home & Security. Products, orders, portfolio, bookings.</div>
+      <div class="service-endpoints">
+        <div class="ep"><span class="ep-method get">GET</span><span class="ep-path">/teknik/products</span><span class="ep-desc">Product catalog</span></div>
+        <div class="ep"><span class="ep-method post">POST</span><span class="ep-path">/teknik/bookings</span><span class="ep-desc">Book survey</span></div>
+        <div class="ep"><span class="ep-method get">GET</span><span class="ep-path">/teknik/portfolio</span><span class="ep-desc">Portfolio</span></div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-head">
+        <div class="service-name">
+          <span class="service-icon">📊</span>
+          <div>
+            <div class="service-title">GAS Terminal API</div>
+            <div class="service-port">Port 8085 · Python FastAPI</div>
+          </div>
+        </div>
+        <span class="badge badge-green">Live</span>
+      </div>
+      <div class="service-desc">AI-powered trading intelligence. Multi-model analysis, journal, backtest engine, psychology tracker.</div>
+      <div class="service-endpoints">
+        <div class="ep"><span class="ep-method post">POST</span><span class="ep-path">/gas/analyze</span><span class="ep-desc">AI analysis</span></div>
+        <div class="ep"><span class="ep-method post">POST</span><span class="ep-path">/gas/journal</span><span class="ep-desc">Trading journal</span></div>
+        <div class="ep"><span class="ep-method post">POST</span><span class="ep-path">/gas/backtest</span><span class="ep-desc">Backtest</span></div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-head">
+        <div class="service-name">
+          <span class="service-icon">🤖</span>
+          <div>
+            <div class="service-title">Golden AI Agent</div>
+            <div class="service-port">Coming Soon</div>
+          </div>
+        </div>
+        <span class="badge badge-yellow">Soon</span>
+      </div>
+      <div class="service-desc">Multi-agent AI assistant platform. Custom workflows, automation, and intelligent task execution.</div>
+      <div class="service-endpoints">
+        <div class="ep"><span class="ep-method post">POST</span><span class="ep-path">/agent/chat</span><span class="ep-desc">AI chat</span></div>
+        <div class="ep"><span class="ep-method post">POST</span><span class="ep-path">/agent/workflow</span><span class="ep-desc">Workflow run</span></div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-head">
+        <div class="service-name">
+          <span class="service-icon">🎨</span>
+          <div>
+            <div class="service-title">Golden AI Studio</div>
+            <div class="service-port">Coming Soon</div>
+          </div>
+        </div>
+        <span class="badge badge-yellow">Soon</span>
+      </div>
+      <div class="service-desc">Creative AI studio for content generation, image creation, and multimedia production tools.</div>
+      <div class="service-endpoints">
+        <div class="ep"><span class="ep-method post">POST</span><span class="ep-path">/studio/generate</span><span class="ep-desc">Generate content</span></div>
+        <div class="ep"><span class="ep-method post">POST</span><span class="ep-path">/studio/image</span><span class="ep-desc">Image gen</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="section" id="projects">
+  <div class="section-title">Sub-Projects</div>
+  <div class="projects-grid">
+    <a href="https://muhamadridwanjr.xyz" target="_blank" class="project-card">
+      <div class="project-emoji">🐉</div>
+      <div class="project-name">MRJ Hub</div>
+      <div class="project-domain">muhamadridwanjr.xyz</div>
+      <div class="project-desc">Main hub website. Portfolio, links, dan gateway ke semua sub-project.</div>
+      <span class="project-tag">Hub</span>
+    </a>
+    <a href="https://admin.muhamadridwanjr.xyz" target="_blank" class="project-card">
+      <div class="project-emoji">⚙️</div>
+      <div class="project-name">Admin Dashboard</div>
+      <div class="project-domain">admin.muhamadridwanjr.xyz</div>
+      <div class="project-desc">Panel admin untuk manage semua subproject, CRM, dokumen, keuangan.</div>
+      <span class="project-tag">Admin</span>
+    </a>
+    <a href="https://teknik05mm.com" target="_blank" class="project-card">
+      <div class="project-emoji">🔧</div>
+      <div class="project-name">Teknik05mm</div>
+      <div class="project-domain">teknik05mm.com</div>
+      <div class="project-desc">Smart Home & Security e-commerce. CCTV, Smart Lock, Pagar Otomatis area Jabodetabek.</div>
+      <span class="project-tag">E-Commerce</span>
+    </a>
+    <a href="https://gasstrategyai.xyz" target="_blank" class="project-card">
+      <div class="project-emoji">📊</div>
+      <div class="project-name">GAS Strategy AI</div>
+      <div class="project-domain">gasstrategyai.xyz</div>
+      <div class="project-desc">AI-powered trading intelligence platform. Multi-model analysis, backtest, psychology tracker.</div>
+      <span class="project-tag">SaaS</span>
+    </a>
+    <a href="https://goldenaiagent.xyz" target="_blank" class="project-card">
+      <div class="project-emoji">🤖</div>
+      <div class="project-name">Golden AI Agent</div>
+      <div class="project-domain">goldenaiagent.xyz</div>
+      <div class="project-desc">Multi-agent AI assistant platform. Custom automation workflows.</div>
+      <span class="project-tag">AI · Soon</span>
+    </a>
+    <a href="https://goldenaistudio.xyz" target="_blank" class="project-card">
+      <div class="project-emoji">🎨</div>
+      <div class="project-name">Golden AI Studio</div>
+      <div class="project-domain">goldenaistudio.xyz</div>
+      <div class="project-desc">Creative AI studio. Content generation, image creation, multimedia tools.</div>
+      <span class="project-tag">AI · Soon</span>
+    </a>
+  </div>
+</div>
+
+<!-- SECURITY -->
+<div class="section" id="security">
+  <div class="section-title">GPIWD — 6-Layer Security</div>
+  <div class="security-grid">
+    <div class="sec-card">
+      <span class="sec-icon">⚡</span>
+      <div>
+        <div class="sec-name">Layer 1 · Neutrofil</div>
+        <div class="sec-desc">Rate limiting & DDoS protection. Per-IP throttling with Redis.</div>
+      </div>
+    </div>
+    <div class="sec-card">
+      <span class="sec-icon">🔍</span>
+      <div>
+        <div class="sec-name">Layer 2 · Makrofag</div>
+        <div class="sec-desc">Request validation & sanitization. SQL injection, XSS prevention.</div>
+      </div>
+    </div>
+    <div class="sec-card">
+      <span class="sec-icon">🔐</span>
+      <div>
+        <div class="sec-name">Layer 3 · Sel T</div>
+        <div class="sec-desc">JWT Authentication. Supabase token verification.</div>
+      </div>
+    </div>
+    <div class="sec-card">
+      <span class="sec-icon">🛡️</span>
+      <div>
+        <div class="sec-name">Layer 4 · Sel B</div>
+        <div class="sec-desc">RBAC Authorization. Role-based permission enforcement.</div>
+      </div>
+    </div>
+    <div class="sec-card">
+      <span class="sec-icon">👁️</span>
+      <div>
+        <div class="sec-name">Layer 5 · NK Cell</div>
+        <div class="sec-desc">Anomaly detection. Bot detection, suspicious pattern flagging.</div>
+      </div>
+    </div>
+    <div class="sec-card">
+      <span class="sec-icon">🤖</span>
+      <div>
+        <div class="sec-name">Layer 6 · Claude AI</div>
+        <div class="sec-desc">AI reasoning for complex/suspicious requests. Context-aware blocking.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-size:22px;margin-bottom:8px">🐉</div>
+  <div><strong style="color:var(--gold)">Golden Dragon</strong> — Created with Love</div>
+  <div style="margin-top:4px">by <a href="https://muhamadridwanjr.xyz" target="_blank">Muhamad Ridwan Jr</a> · <a href="https://admin.muhamadridwanjr.xyz" target="_blank">Admin Panel</a></div>
+  <div style="margin-top:12px;font-size:11px">goldendragon.muhamadridwanjr.xyz · VPS 80.241.209.77 · Port 7777</div>
+</footer>
+
+<script>
+const GW = 'https://goldendragon.muhamadridwanjr.xyz'
+
+async function checkService(url, dotId, latId) {
+  const dot = document.getElementById(dotId)
+  const lat = document.getElementById(latId)
+  const t = Date.now()
+  try {
+    const r = await fetch(url, { signal: AbortSignal.timeout(5000) })
+    const ms = Date.now() - t
+    dot.className = 'status-dot ' + (r.ok ? 'dot-green' : 'dot-yellow')
+    lat.textContent = ms + 'ms'
+  } catch {
+    dot.className = 'status-dot dot-red'
+    lat.textContent = 'offline'
+  }
+}
+
+async function checkAll() {
+  const gwBadge = document.getElementById('gw-status')
+  try {
+    const r = await fetch(`${GW}/health`, { signal: AbortSignal.timeout(5000) })
+    if (r.ok) {
+      gwBadge.textContent = '● Live'
+      gwBadge.style.background = 'rgba(48,209,88,.15)'
+      gwBadge.style.color = 'var(--green)'
+      gwBadge.style.borderColor = 'rgba(48,209,88,.3)'
+    }
+  } catch {
+    gwBadge.textContent = '○ Offline'
+    gwBadge.style.background = 'rgba(255,69,58,.1)'
+    gwBadge.style.color = 'var(--red)'
+  }
+
+  checkService(`${GW}/health`, 'dot-gw', 'lat-gw')
+  checkService(`${GW}/teknik/products?limit=1`, 'dot-teknik', 'lat-teknik')
+  checkService(`${GW}/gas/health`, 'dot-gas', 'lat-gas')
+}
+
+checkAll()
+setInterval(checkAll, 30000)
+</script>
+</body>
+</html>
