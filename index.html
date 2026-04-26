@@ -188,30 +188,109 @@ footer {
 }
 footer a { color: var(--gold); text-decoration: none; }
 
-/* MOBILE */
+/* HOVER MICRO-INTERACTIONS */
+.service-card {
+  transition: all .25s cubic-bezier(.34,1.1,.64,1);
+}
+.service-card:hover {
+  border-color: rgba(245,197,24,.3);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(245,197,24,.08);
+}
+.project-card {
+  transition: all .25s cubic-bezier(.34,1.1,.64,1);
+}
+.project-card:hover {
+  border-color: rgba(41,151,255,.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(41,151,255,.1);
+}
+.sec-card { transition: all .2s ease; }
+.sec-card:hover { border-color: var(--border); transform: translateY(-2px); }
+
+/* MOBILE NAV */
 #mob-menu-btn {
-  display: none; background: none; border: none;
-  color: var(--gold); font-size: 20px; cursor: pointer;
+  display: none;
+  background: none; border: 1px solid var(--border);
+  color: var(--gold); font-size: 18px; cursor: pointer;
+  width: 38px; height: 38px; border-radius: 9px;
+  align-items: center; justify-content: center;
+  transition: background .2s;
+}
+#mob-menu-btn:hover { background: var(--bg3); }
+#mob-nav-drawer {
+  display: none;
+  position: fixed; top: 56px; left: 0; right: 0; z-index: 90;
+  background: rgba(10,10,15,.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px 16px;
+  flex-direction: column; gap: 4px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+}
+#mob-nav-drawer.open { display: flex; }
+#mob-nav-drawer a {
+  color: var(--muted); font-size: 15px; font-weight: 500;
+  padding: 12px 14px; border-radius: 10px;
+  text-decoration: none; transition: all .15s;
+}
+#mob-nav-drawer a:hover { color: var(--text); background: rgba(255,255,255,.05); }
+#mob-nav-overlay {
+  display: none; position: fixed; inset: 0; z-index: 89;
+}
+#mob-nav-overlay.open { display: block; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+@media (max-width: 1024px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
-  #mob-menu-btn { display: flex; align-items: center; }
+  #mob-menu-btn { display: flex; }
   .nav-links { display: none; }
   .hero { padding: 100px 16px 60px; }
-  .hero h1 { font-size: 30px; }
+  .hero h1 { font-size: clamp(26px, 7vw, 36px); }
   .hero p { font-size: 15px; }
-  .stats { gap: 24px; padding: 0 16px 60px; }
+  .stats { gap: 20px; padding: 0 16px 60px; }
+  .stat .val { font-size: 22px; }
   .section { padding: 0 16px 60px; }
   .services-grid { grid-template-columns: 1fr; }
   .projects-grid { grid-template-columns: 1fr 1fr; }
   .security-grid { grid-template-columns: 1fr 1fr; }
   nav { padding: 0 16px; }
+  .status-bar { gap: 10px; }
 }
 @media (max-width: 480px) {
   .projects-grid { grid-template-columns: 1fr; }
   .security-grid { grid-template-columns: 1fr; }
-  .hero-actions { flex-direction: column; align-items: center; }
-  .btn-primary, .btn-secondary { width: 100%; max-width: 280px; text-align: center; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .btn-primary, .btn-secondary { text-align: center; justify-content: center; }
+  .stats { flex-wrap: wrap; gap: 16px; }
+  .stat { min-width: 40%; }
 }
+
+/* ── BOTTOM NAV ── */
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:800;background:rgba(0,0,5,.93);backdrop-filter:blur(24px) saturate(200%);-webkit-backdrop-filter:blur(24px) saturate(200%);border-top:1px solid rgba(212,175,55,.12);padding:6px 0 calc(6px + env(safe-area-inset-bottom));box-shadow:0 -16px 48px rgba(0,0,0,.6)}
+.bnav-inner{display:flex;align-items:center;justify-content:space-around;max-width:500px;margin:0 auto;padding:0 4px}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:rgba(255,255,255,.45);font-size:10px;font-weight:500;letter-spacing:.3px;padding:6px 12px;border-radius:12px;cursor:pointer;transition:color .2s,transform .15s;-webkit-tap-highlight-color:transparent;min-width:52px}
+.bn svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.bn:active svg{transform:scale(.88)}
+.bn.act{color:currentColor;font-weight:600}
+.bn.act svg{transform:scale(1.12)}
+.bn-1.act{color:#D4AF37}.bn-2.act{color:#2997FF}.bn-3.act{color:#34C759}.bn-4.act{color:#BF5AF2}.bn-5.act{color:#FF9F0A}
+.bnav-fab{position:fixed;bottom:calc(76px + env(safe-area-inset-bottom));right:16px;z-index:900;width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#D4AF37,#B8860B);border:none;color:#000;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 24px rgba(212,175,55,.45);transition:all .22s cubic-bezier(.34,1.56,.64,1);-webkit-tap-highlight-color:transparent}
+.bnav-fab:hover{transform:scale(1.08) rotate(15deg)}.bnav-fab:active{transform:scale(.93)}
+.bnav-fab svg{width:20px;height:20px;stroke-width:2;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+.bnav-fab.open svg{transform:rotate(45deg)}
+.bnav-more{position:fixed;bottom:calc(132px + env(safe-area-inset-bottom));right:16px;z-index:890;background:rgba(5,5,10,.97);backdrop-filter:blur(24px);border:1px solid rgba(212,175,55,.15);border-radius:18px;padding:8px;min-width:210px;box-shadow:0 20px 60px rgba(0,0,0,.7);display:none;flex-direction:column;gap:2px;transform-origin:bottom right}
+.bnav-more.open{display:flex;animation:bmIn .22s cubic-bezier(.34,1.4,.64,1)}
+@keyframes bmIn{from{opacity:0;transform:scale(.8) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.bm-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;font-weight:500;transition:background .15s,color .15s}
+.bm-item:hover{background:rgba(212,175,55,.1);color:#D4AF37}
+@media(max-width:900px){.bnav{display:block}.bnav-fab{display:flex}body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}}
 </style>
 </head>
 <body>
@@ -224,7 +303,7 @@ footer a { color: var(--gold); text-decoration: none; }
       <div class="name">Golden Dragon API</div>
     </div>
   </div>
-  <button id="mob-menu-btn" onclick="scrollTo({top:0})">☰</button>
+  <button id="mob-menu-btn" onclick="toggleMobileNav()" aria-label="Menu">☰</button>
   <div class="nav-links">
     <a href="#services">Services</a>
     <a href="#projects">Projects</a>
@@ -232,6 +311,15 @@ footer a { color: var(--gold); text-decoration: none; }
     <div class="nav-badge" id="gw-status">Checking...</div>
   </div>
 </nav>
+
+<!-- Mobile nav drawer -->
+<div id="mob-nav-overlay" onclick="closeMobileNav()"></div>
+<div id="mob-nav-drawer">
+  <a href="#services" onclick="closeMobileNav()">Services</a>
+  <a href="#projects" onclick="closeMobileNav()">Projects</a>
+  <a href="#security" onclick="closeMobileNav()">Security</a>
+  <a href="#status" onclick="closeMobileNav()">Status</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -523,6 +611,106 @@ async function checkAll() {
 
 checkAll()
 setInterval(checkAll, 30000)
+
+function toggleMobileNav() {
+  const drawer = document.getElementById('mob-nav-drawer')
+  const overlay = document.getElementById('mob-nav-overlay')
+  const btn = document.getElementById('mob-menu-btn')
+  const open = drawer.classList.toggle('open')
+  overlay.classList.toggle('open', open)
+  btn.textContent = open ? '✕' : '☰'
+}
+function closeMobileNav() {
+  document.getElementById('mob-nav-drawer').classList.remove('open')
+  document.getElementById('mob-nav-overlay').classList.remove('open')
+  document.getElementById('mob-menu-btn').textContent = '☰'
+}
+</script>
+
+<!-- ── BOTTOM NAV ── -->
+<nav class="bnav" id="bnavGd">
+  <div class="bnav-inner">
+    <button class="bn bn-1 act" onclick="bnavGo('hero',this)" aria-label="Home">
+      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="bn bn-2" onclick="bnavGo('services',this)" aria-label="Services">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Services</span>
+    </button>
+    <button class="bn bn-3" onclick="bnavGo('projects',this)" aria-label="Projects">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Projects</span>
+    </button>
+    <button class="bn bn-4" onclick="bnavGo('security',this)" aria-label="Security">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Security</span>
+    </button>
+    <button class="bn bn-5" onclick="bnavGo('status',this)" aria-label="Status">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Status</span>
+    </button>
+  </div>
+</nav>
+
+<button class="bnav-fab" id="bnavFab" onclick="toggleBnavMore()" aria-label="More">
+  <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+</button>
+
+<div class="bnav-more" id="bnavMore">
+  <a class="bm-item" href="https://gasstrategyai.xyz" target="_blank">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+    GAS Strategy AI
+  </a>
+  <a class="bm-item" href="https://teknik05mm.com" target="_blank">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    Teknik05mm
+  </a>
+  <a class="bm-item" href="https://muhamadridwanjr.xyz" target="_blank">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    MR Profile
+  </a>
+  <a class="bm-item" href="https://admin.muhamadridwanjr.xyz" target="_blank">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+    Admin Panel
+  </a>
+</div>
+
+<script>
+/* ── BOTTOM NAV GOLDEN DRAGON ── */
+function bnavGo(id, el) {
+  document.querySelectorAll('.bn').forEach(b => b.classList.remove('act'))
+  el.classList.add('act')
+  const sec = document.getElementById(id)
+  if (sec) sec.scrollIntoView({behavior:'smooth'})
+  closeBnavMore()
+}
+function toggleBnavMore() {
+  const fab=document.getElementById('bnavFab'), panel=document.getElementById('bnavMore')
+  const open=panel.classList.toggle('open')
+  fab.classList.toggle('open',open)
+}
+function closeBnavMore() {
+  document.getElementById('bnavFab').classList.remove('open')
+  document.getElementById('bnavMore').classList.remove('open')
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#bnavFab') && !e.target.closest('#bnavMore')) closeBnavMore()
+})
+
+/* scroll active tracking */
+const _gdSecs = ['hero','services','projects','security','status']
+const _gdObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return
+    const idx = _gdSecs.indexOf(e.target.id)
+    if (idx >= 0) {
+      document.querySelectorAll('.bn').forEach(b => b.classList.remove('act'))
+      document.querySelectorAll('.bn')[idx]?.classList.add('act')
+    }
+  })
+}, {threshold:.4})
+_gdSecs.forEach(id => { const el=document.getElementById(id); if(el) _gdObs.observe(el) })
 </script>
 </body>
 </html>
