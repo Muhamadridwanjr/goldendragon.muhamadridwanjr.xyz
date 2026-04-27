@@ -291,6 +291,14 @@ footer a { color: var(--gold); text-decoration: none; }
 .bm-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;font-weight:500;transition:background .15s,color .15s}
 .bm-item:hover{background:rgba(212,175,55,.1);color:#D4AF37}
 @media(max-width:900px){.bnav{display:block}.bnav-fab{display:flex}body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}}
+
+/* ── komplen.md: remove bottom nav ── */
+.bnav,.bnav-inner,.bnav-btn,.bnav-more,.bnav-fab{display:none!important}
+@media(max-width:900px){
+  body{padding-bottom:0!important}
+  .burger,.hamburger{display:flex!important}
+  .mob-nav,.mob-drawer{z-index:900}
+}
 </style>
 </head>
 <body>
